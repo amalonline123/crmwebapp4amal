@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+                        name: Deploy to GitHub Pages
 on:
   push:
     branches:
@@ -16,9 +16,15 @@ jobs:
         with:
           node-version: '18'
       - run: npm ci
+      - name: Code Quality Checks
+        run: |
+          # Run ESLint with no or minimal config
+          npx eslint . --ext .js,.jsx,.ts,.tsx || exit 1
+          # Quick Prettier check with no config
+          npx prettier --check "**/*.{js,jsx,ts,tsx,json,md,css}"
       - run: npm run build
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.ghs1 }}
-          publish_dir: ./dist
+          publish_dir: ./dist 
